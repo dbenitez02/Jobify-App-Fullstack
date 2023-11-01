@@ -6,6 +6,8 @@ import mongoose from 'mongoose';
 
 import jobRouter from './routes/jobRouter.js';
 import errorHandlerMiddleWare from './middleware/errorHandlerMiddleware.js';
+import { body, validationResult } from 'express-validator';
+import { validateTest } from './middleware/validationMiddleware.js';
 
 dotenv.config();
 const app = express();
@@ -23,9 +25,9 @@ app.get('/', (req, res) => {
     res.send("Hello World");
 });
 
-app.post('/', (req, res) => {
-    console.log(res);
-    res.json({message: 'data received', data: req.body});
+app.post('/api/test', validateTest, (req, res) => {
+    const {name} = req.body;
+    res.json({message: `Hello ${name}`});
 });
 
 app.use('/api/jobs', jobRouter);
