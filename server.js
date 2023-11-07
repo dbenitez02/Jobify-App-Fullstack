@@ -7,12 +7,10 @@ import mongoose from 'mongoose';
 import jobRouter from './routes/jobRouter.js';
 import errorHandlerMiddleWare from './middleware/errorHandlerMiddleware.js';
 import { body, validationResult } from 'express-validator';
-import { validateTest } from './middleware/validationMiddleware.js';
+
 
 dotenv.config();
 const app = express();
-
-
 
 if(process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
@@ -20,15 +18,10 @@ if(process.env.NODE_ENV === 'development') {
 
 app.use(express.json());
 
-
 app.get('/', (req, res) => {
     res.send("Hello World");
 });
 
-app.post('/api/test', validateTest, (req, res) => {
-    const {name} = req.body;
-    res.json({message: `Hello ${name}`});
-});
 
 app.use('/api/jobs', jobRouter);
 
