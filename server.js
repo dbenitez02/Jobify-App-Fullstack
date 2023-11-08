@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import mongoose from 'mongoose';
 
 import jobRouter from './routes/jobRouter.js';
+import authRouter from './routes/authRouther.js';
 import errorHandlerMiddleWare from './middleware/errorHandlerMiddleware.js';
 import { body, validationResult } from 'express-validator';
 
@@ -24,6 +25,7 @@ app.get('/', (req, res) => {
 
 
 app.use('/api/jobs', jobRouter);
+app.use('/api/auth', authRouter);
 
 app.use('*', (req, res) => {
     res.status(404).json({msg: "Not found"});

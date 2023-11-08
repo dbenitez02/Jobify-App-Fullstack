@@ -12,7 +12,7 @@ const withValidationErrors = (validateValues) => {
             if (!errors.isEmpty()) {
                 const errorMessages = errors.array().map((error) => error.msg);
                 console.log(errorMessages);
-                if(errorMessages[0].startsWith('id is')) { // For some reason the error that is being returned is id not defined
+                if(errorMessages[0].startsWith('no job')) {
                     throw new NotFoundError(errorMessages);
                 }
                 throw new BadRequestError(errorMessages);
