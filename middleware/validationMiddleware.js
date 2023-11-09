@@ -63,3 +63,14 @@ export const validateRegisterInput = withValidationErrors([
         .withMessage('last name is required'),
     body('location').notEmpty().withMessage('location is required')
 ]);
+
+export const validateLoginInput = withValidationErrors ([
+    body('email')
+        .notEmpty()
+        .withMessage('must enter email')
+        .isEmail()
+        .withMessage('valid email is required'),
+    body('password')
+        .notEmpty()
+        .withMessage('must enter password'),
+])
