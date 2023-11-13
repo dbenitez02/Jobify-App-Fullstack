@@ -2,10 +2,6 @@ import { StatusCodes } from "http-status-codes";
 import Job from "../models/JobModel.js";
 import { nanoid } from 'nanoid';
 
-let jobs = [
-    {id: nanoid(), company: 'apple', position: 'front-end'},
-    {id: nanoid(), company: 'google', position: 'back-end'},
-];
 
 /** Get all jobs */
 export const getAllJobs = async (req, res) => {

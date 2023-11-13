@@ -24,6 +24,13 @@ export const login = async (req, res) => {
     const isPasswordCorrect = await comparePassword(req.body.password, user.password)
     if(!isPasswordCorrect) throw new UnauthenticatedError('Password is incorrect');
 
+    const oneDay = 1000 * 60 * 60 * 24; // One day
     const token = createJWT({ userId: user._id, role: user.role });
-    res.json({ token });
+    
+    res.cookie('token', token, {
+        httpOnly: true,
+        expires: new Date(Date.now() + oneDay),
+        secure: process.env.NODE_ENV === 'production',
+    })
+    res.status(StatusCodes.OK).json({msg: 'User logged in'});
 };
