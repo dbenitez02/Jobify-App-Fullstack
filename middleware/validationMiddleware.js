@@ -1,5 +1,5 @@
 import { body, param, validationResult } from 'express-validator';
-import { BadRequestError, NotFoundError } from '../errors/customError.js';
+import { BadRequestError, NotFoundError, UnauthorizedError } from '../errors/customError.js';
 import { JOB_STATUS, JOB_TYPE } from '../utils/constants.js';
 import mongoose from 'mongoose';
 import Job from "../models/JobModel.js";
@@ -13,7 +13,10 @@ const withValidationErrors = (validateValues) => {
             if (!errors.isEmpty()) {
                 const errorMessages = errors.array().map((error) => error.msg);
                 if(errorMessages[0].startsWith('no job')) {
-                    throw new NotFoundError(errorMessages);
+                    throw new NotFoundError("job not found");
+                }
+                if(errorMessages[0].startsWith('not authorized')) {
+                    throw new UnauthorizedError("not authorized to access this route");
                 }
                 throw new BadRequestError(errorMessages);
             }
@@ -30,13 +33,24 @@ export const validateJobInput = withValidationErrors([
     body('jobType').isIn(Object.values(JOB_TYPE)).withMessage('invalid job type'),
 ]);
 
+
 export const validateIdParam = withValidationErrors([
     param('id')
-        .custom(async (value) => {
+        .custom(async (value, {req}) => {
+
+            // Check if mongo ID is a valid ID.
             const isValidId = mongoose.Types.ObjectId.isValid(value);
             if (!isValidId) throw new Error('invalid MongoDB id');
+
+            // Check if job exists.
             const job = await Job.findById(value);
             if (!job) throw new NotFoundError(`No job with id: ${value}`);
+
+            // Check if user searching single job is owner of job or admin.
+            const isAdmin = req.user.role === 'admin';
+            const isOwner =  req.user.userId === job.createdBy.toString();
+            if (!isAdmin && !isOwner) throw new UnauthorizedError("not authorized to access this route");
+
 
          }),
 

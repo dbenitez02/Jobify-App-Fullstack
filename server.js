@@ -10,17 +10,14 @@ import authRouter from './routes/authRouther.js';
 import errorHandlerMiddleWare from './middleware/errorHandlerMiddleware.js';
 import { authenticateUser } from './middleware/authMiddleware.js';
 
-
-
 dotenv.config();
 const app = express();
-app.use(cookieParser());
 
 if(process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
-
+app.use(cookieParser());
 app.use(express.json());
 
 app.get('/', (req, res) => {
