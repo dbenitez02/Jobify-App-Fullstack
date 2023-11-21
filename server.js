@@ -6,7 +6,8 @@ import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 
 import jobRouter from './routes/jobRouter.js';
-import authRouter from './routes/authRouther.js';
+import authRouter from './routes/authRouter.js';
+import userRouter from './routes/userRouter.js';
 import errorHandlerMiddleWare from './middleware/errorHandlerMiddleware.js';
 import { authenticateUser } from './middleware/authMiddleware.js';
 
@@ -26,6 +27,7 @@ app.get('/', (req, res) => {
 
 
 app.use('/api/jobs', authenticateUser, jobRouter);
+app.use('/api/users', authenticateUser, userRouter);
 app.use('/api/auth', authRouter);
 
 app.use('*', (req, res) => {

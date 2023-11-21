@@ -19,4 +19,10 @@ const UserSchema = new mongoose.Schema({
     },
 });
 
+// This will remove the password field when retrieving user info.
+UserSchema.methods.toJSON = function () {
+    let obj = this.toObject();
+    delete obj.password;
+    return obj;
+}
 export default mongoose.model('user', UserSchema);
