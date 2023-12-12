@@ -9,7 +9,6 @@
     "server": "nodemon server",
     "client": "cd mern-stack-app && npm run dev",
     "dev": "concurrently --kill-others-on-fail \" npm run server\" \" npm run client\""
-
   },
   "keywords": [],
   "author": "",

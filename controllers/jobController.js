@@ -4,7 +4,6 @@ import Job from "../models/JobModel.js";
 
 /** Get all jobs */
 export const getAllJobs = async (req, res) => {
-    console.log(req.user);
     const jobs = await Job.find({ createdBy: req.user.userId });
     return res.status(StatusCodes.OK).json({ jobs });
 };
