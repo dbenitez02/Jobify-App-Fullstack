@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { getApplicationStats, getCurrentUser, updateUser } from "../controllers/userController.js";
 import { validateUpdateUserInput } from "../middleware/validationMiddleware.js";
-import { authorizePermissions } from "../middleware/authMiddleware.js";
+import { authorizePermissions, checkForTestUser } from "../middleware/authMiddleware.js";
 import upload from "../middleware/multerMiddleware.js";
 
 
@@ -13,7 +13,8 @@ router.get('/admin/application-stats', [
     getApplicationStats
 ]);
 router.patch(
-    '/update-user', 
+    '/update-user',
+    checkForTestUser, 
     upload.single('avatar'), 
     validateUpdateUserInput, 
     updateUser
