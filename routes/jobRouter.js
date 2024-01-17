@@ -8,12 +8,17 @@ import {
     getJob,
     createJob,
     updateJob,
-    deleteJob
+    deleteJob,
+    showStats
 } from '../controllers/jobController.js';
 
 
 // routes after /api/jobs
-router.route('/').get(getAllJobs).post(checkForTestUser, validateJobInput, createJob);
+router.route('/')
+    .get(getAllJobs)
+    .post(checkForTestUser, validateJobInput, createJob);
+
+router.route('/stats').get(showStats);
 router.route('/:id')
     .get(validateIdParam, getJob)
     .patch(checkForTestUser, validateIdParam, validateJobInput, updateJob)
